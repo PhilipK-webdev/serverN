@@ -7,8 +7,11 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 const apiRoutes = require("./api/routes");
 app.use(apiRoutes);
-db.sequelize.sync().then(function () {
-  app.listen(PORT, function () {
-    console.log(`App listening at http://localhost:${PORT}`);
-  });
-});
+db.sequelize
+  .sync()
+  .then(function () {
+    app.listen(PORT, function () {
+      console.log(`App listening at http://localhost:${PORT}`);
+    });
+  })
+  .catch((err) => console.log(err));

@@ -1,5 +1,5 @@
 module.exports = (sequelize, DataTypes) => {
-  const Products = sequelize.define("Products", {
+  const Product = sequelize.define("Product", {
     product_id: {
       type: DataTypes.INTEGER,
       primaryKey: true,
@@ -9,21 +9,22 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: false,
     },
+
     category_id: {
       type: DataTypes.INTEGER,
       allowNull: false,
       references: {
-        model: "Category",
+        model: "Categories",
         key: "category_id",
       },
     },
   });
-  Products.associate = (models) => {
-    Products.belongsTo(models.Category, {
+  Product.associate = (models) => {
+    Product.belongsTo(models.Categories, {
       foreignKey: "category_id",
       onDelete: "CASCADE", // Delete products associated with the category when the category is deleted
     });
   };
 
-  return Products;
+  return Product;
 };

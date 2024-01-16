@@ -3,8 +3,8 @@ const router = express.Router();
 const db = require("../models");
 router.get("/api/v1/categories", async (req, res) => {
   try {
-    const categoriesWithProducts = await db.Category.findAll({
-      include: [db.Products],
+    const categoriesWithProducts = await db.Categories.findAll({
+      include: [db.Product],
     });
 
     res.json(categoriesWithProducts);
@@ -13,9 +13,9 @@ router.get("/api/v1/categories", async (req, res) => {
     res.status(500).send("Internal Server Error");
   }
 });
-router.post("/api/create", async (req, res) => {
+router.post("/api/v1/create", async (req, res) => {
   try {
-    db.Category.create({
+    db.Categories.create({
       category_name: req.body.categoryName,
     });
     res.json({ message: "DONE" });
@@ -24,15 +24,14 @@ router.post("/api/create", async (req, res) => {
     res.status(500).send("Internal Server Error");
   }
 });
-router.post("/api/createProduct", async (req, res) => {
+router.post("/api/v1/createProduct", async (req, res) => {
   try {
     const { productName, categoryName } = req.body;
 
-    const [category, created] = await db.Category.findOrCreate({
+    const [category, created] = await db.Categories.findOrCreate({
       where: { category_name: categoryName },
     });
-    console.log("id=>", category.dataValues.category_id);
-    const product = await db.Products.create({
+    const product = await db.Product.create({
       product_value: productName,
       category_id: category.category_id, // Assign the category id to the product's categoryId
     });
@@ -55,16 +54,6 @@ router.post("/api/products", async (req, res) => {
     } else {
       console.log(`Category with id ${category_id} not found.`);
     }
-  } catch (error) {
-    console.error("Error retrieving products:", error);
-    res.status(500).send("Internal Server Error");
-  }
-});
-router.post("/api/v1/create", async (req, res) => {
-  try {
-    const data = req.body;
-    console.log("Data", data);
-    res.json({ key: "YEAHHHH" });
   } catch (error) {
     console.error("Error retrieving products:", error);
     res.status(500).send("Internal Server Error");

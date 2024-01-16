@@ -1,5 +1,5 @@
 module.exports = (sequelize, DataTypes) => {
-  const Category = sequelize.define("Category", {
+  const Categories = sequelize.define("Categories", {
     category_id: {
       type: DataTypes.INTEGER,
       primaryKey: true,
@@ -10,8 +10,8 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
     },
   });
-  Category.associate = (models) => {
-    Category.hasMany(models.Products, { foreignKey: "category_id" });
+  Categories.associate = (models) => {
+    Categories.hasMany(models.Product, { foreignKey: "category_id" });
   };
-  return Category;
+  return Categories;
 };
