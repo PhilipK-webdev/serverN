@@ -35,8 +35,11 @@ router.post("/api/v1/createProduct", async (req, res) => {
       product_value: productName,
       category_id: category.category_id, // Assign the category id to the product's categoryId
     });
+    const categoriesWithProducts = await db.Categories.findAll({
+      include: [db.Product],
+    });
 
-    res.json({ message: "Product created successfully", product });
+    res.json(categoriesWithProducts);
   } catch (error) {
     console.error("Error retrieving strings:", error);
     res.status(500).send("Internal Server Error");
